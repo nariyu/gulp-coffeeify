@@ -49,7 +49,7 @@ gulp.task('scripts', function() {
 
 ```javascript
 var gulp = require('gulp');
-var cofeeify = require('gulp-coffeeify');
+var coffeeify = require('gulp-coffeeify');
 gulp.task('scripts', function() {
   gulp.src('src/coffee/**/*.coffee')
     .pipe(coffeeify({
