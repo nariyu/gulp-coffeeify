@@ -151,6 +151,7 @@ module.exports = (opts = {})->
                 traceError 'coffee-script: COMPILE ERROR: ', e.message + ': line ' + (e.location.first_line + 1), 'at', filePath
                 cacheSkip = true
                 data = ''
+                throw e
 
           transformCache[file] = [mtime, data] unless cacheSkip
         @push data
