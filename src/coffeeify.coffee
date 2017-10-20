@@ -75,6 +75,7 @@ module.exports = (opts = {})->
 
   # through
   through2.obj (file, enc, cb)->
+
     self = this
 
     if file.isStream()
@@ -151,8 +152,7 @@ module.exports = (opts = {})->
                 traceError 'coffee-script: COMPILE ERROR: ', e.message + ': line ' + (e.location.first_line + 1), 'at', filePath
                 cacheSkip = true
                 data = ''
-                throw e
-
+                self.emit 'error', e
           transformCache[file] = [mtime, data] unless cacheSkip
         @push data
         cb()
@@ -162,8 +162,8 @@ module.exports = (opts = {})->
     b.bundle (err, jsCode)->
 
       if err
-        traceError err
-        return
+        traceError "browserify: BUNDLE ERROR: #{err.message}"
+        self.emit 'error', err
 
       else
 
@@ -173,11 +173,11 @@ module.exports = (opts = {})->
         srcFilePath = path.relative process.cwd(), srcFile
         destFilePath = path.relative process.cwd(), destFile
 
-        # 
+        #
         gutil.log gutil.colors.green "coffeeify: #{srcFilePath} > #{destFilePath}"
 
         file.path = destFile
         self.push file
-      
+
       # callback
       cb()
