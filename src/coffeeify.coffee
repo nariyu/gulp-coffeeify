@@ -11,6 +11,8 @@ replaceExtension = require('gulp-util').replaceExtension
 PluginError = require('gulp-util').PluginError
 convert     = require 'convert-source-map'
 
+PLUGIN_NAME = 'gulp-coffeeify'
+
 # cache
 transformCache = {}
 aliasMap = {}
@@ -79,7 +81,7 @@ module.exports = (opts = {})->
     self = this
 
     if file.isStream()
-      return cb new PluginError 'gulp-coffeeify', 'Streaming not supported'
+      return cb new PluginError PLUGIN_NAME, 'Streaming not supported'
 
     options = _.defaults {}, opts.options
 
@@ -152,7 +154,7 @@ module.exports = (opts = {})->
                 traceError 'coffee-script: COMPILE ERROR: ', e.message + ': line ' + (e.location.first_line + 1), 'at', filePath
                 cacheSkip = true
                 data = ''
-                self.emit 'error', e
+                self.emit 'error', new PluginError PLUGIN_NAME, e
           transformCache[file] = [mtime, data] unless cacheSkip
         @push data
         cb()
@@ -163,7 +165,7 @@ module.exports = (opts = {})->
 
       if err
         traceError "browserify: BUNDLE ERROR: #{err.message}"
-        self.emit 'error', err
+        self.emit 'error', new PluginError PLUGIN_NAME, err
 
       else
 
