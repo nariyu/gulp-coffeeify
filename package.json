@@ -1,6 +1,6 @@
 {
   "name": "gulp-coffeeify",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Browserify plugin with coffee-script for Gulp.",
   "main": "lib/coffeeify",
   "devDependencies": {
